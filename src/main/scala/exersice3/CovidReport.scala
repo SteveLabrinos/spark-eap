@@ -1,4 +1,4 @@
-package exersice2
+package exersice3
 
 import org.apache.spark.sql._
 import org.apache.spark.sql.functions.{avg, desc, round, sum}
