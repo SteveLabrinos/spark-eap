@@ -1,4 +1,4 @@
-package exersice3
+package exercise3
 
 import org.apache.spark.sql._
 import org.apache.spark.sql.functions.{avg, desc, round, sum}
@@ -14,7 +14,7 @@ object CovidReport {
                    countriesAndTerritories: String,
                    continentExp: String
                  )
-
+  // exercise
   def main(args: Array[String]): Unit = {
     // Use new SparkSession
     val spark = SparkSession

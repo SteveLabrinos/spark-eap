@@ -1,4 +1,4 @@
-package exersice1
+package exercise1
 
 import org.apache.spark.SparkContext
 
