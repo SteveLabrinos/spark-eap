@@ -2,6 +2,8 @@ package exercise2
 
 import org.apache.spark.SparkContext
 
+/** @author Steve Labrinos [staLab at linuxmail.org] on 10/5/21 */
+
 object ChessGames {
   def parseLine(line: String): (String, String) = {
     // Split by commas
@@ -12,7 +14,8 @@ object ChessGames {
       .mkString("_")
     // Get the moves field for the second report
     val moves = fields(12)
-    // Create a tuple that with the key and 1 as the counter
+    // Create a tuple that with the player couple and the games move
+    // for the different reports
     (players, moves)
   }
 
@@ -21,7 +24,7 @@ object ChessGames {
     val sc = new SparkContext("local[*]", "WordCount")
     // Load each line of the book into an RDD
     val input = sc.textFile("data/games.csv")
-      // Get the tuple (players, 1) for every player couple
+      // Get the tuple (players, moves) for every game
       .map(parseLine)
 
     // Get the occurrences for each player couple

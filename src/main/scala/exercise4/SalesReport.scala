@@ -4,6 +4,7 @@ import org.apache.spark.sql._
 import org.apache.spark.sql.functions.{col, udf}
 import org.apache.spark.sql.functions.{avg, desc, round, sum, count}
 
+/** @author Steve Labrinos [staLab at linuxmail.org] on 9/5/21 */
 
 object SalesReport {
 
@@ -41,7 +42,7 @@ object SalesReport {
     // Wrap the anonymous function  with a udf
     val salesTurnoverUDF = udf(calcTurnover)
 
-    // Add a movieTitle column using our new udf
+    // Add a turnover column using our new udf
     val salesWithTurnover = sales
       .withColumn("Turnover", salesTurnoverUDF(col("Quantity"), col("UnitPrice")))
 
@@ -90,6 +91,8 @@ object SalesReport {
       .agg(round(sum("Turnover"), 2).alias("TotalAmountSpent"))
       .orderBy(desc("TotalAmountSpent"))
       .show(5)
+
+    spark.close()
   }
 
 }

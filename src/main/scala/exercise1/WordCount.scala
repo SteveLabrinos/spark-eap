@@ -2,6 +2,8 @@ package exercise1
 
 import org.apache.spark.SparkContext
 
+/** @author Steve Labrinos [staLab at linuxmail.org] on 9/5/21 */
+
 object WordCount {
   def main(args: Array[String]): Unit = {
     // Create a SparkContext using the local machine
@@ -30,18 +32,18 @@ object WordCount {
       // Count of the occurrences of each word
       .map((_, 1))
       .reduceByKey(_ + _)
-      // Flip (word, count) tuples to (count, word) and then sort by key (the counts)
+      // Flip (word, count) tuples to (count, word) and then sort by key
       .map(x => (x._2, x._1))
       .sortByKey(ascending = false)
       // Collecting the RDD results from the cluster (different cores for local execution)
       .collect()
 
-    // Printing the results of the exercise
+    // Printing the results of total words and average word length
     println("Total words found: " + wordsLengthAndCount._2)
     val formatAverage = f"$wordAvg%.2f"
     println(s"Average length of all the words: $formatAverage")
 
-    // Print the results the first 5 results (count, word).
+    // Print the top 5 results (count, word).
     for (result <- wordCounts.take(5)) {
       val count = result._1
       val word = result._2

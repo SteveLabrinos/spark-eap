@@ -3,6 +3,8 @@ package exercise3
 import org.apache.spark.sql._
 import org.apache.spark.sql.functions.{avg, desc, round, sum}
 
+/** @author Steve Labrinos [staLab at linuxmail.org] on 9/5/21 */
+
 object CovidReport {
   // Define a class to implicitly convert the DataFrame to DataSet
   case class Case(
@@ -69,6 +71,8 @@ object CovidReport {
       .agg(sum("cases").alias("total_cases"))
       .orderBy(desc("total_cases"))
       .show(10)
+
+    spark.close()
   }
 
 }
