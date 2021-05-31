@@ -66,19 +66,29 @@ object SalesReport {
     // Top 5 products by counting the appearances in different invoices
     println("Top 5 products in terms of appearances")
     salesWithTurnover
+      // Filter the products with negative Quantity or Price as these transactions
+      // indicate cancellations, therefore can't be counted towards popularity of an item
+      .filter(salesWithTurnover("Quantity") > 0)
+      .filter(salesWithTurnover("UnitPrice") > 0)
       .groupBy("StockCode")
       .agg(count("*").alias("Appearances"))
       .orderBy(desc("Appearances"))
       .show(5)
 
-    // Average Quantity and Turnover for all procucts
+    // Average Quantity and Turnover for all products
     println("Average Quantity and Turnover of invoices")
     salesWithTurnover
-      // add a group by function to receive the average prices per invoice
-      //  .groupBy("InvoiceNo")
+      // Discard transactions with negative Quantity or Price as the wrongly affect the total
+      // average calculation, as they belong to cancellation records
+      .filter(salesWithTurnover("Quantity") > 0)
+      .filter(salesWithTurnover("UnitPrice") > 0)
+      // First group by InvoiceNo to get the average Quantity an Turnover by invoice
+      .groupBy("InvoiceNo")
       .agg(round(avg("Quantity"), 2).alias("AverageProducts"),
         round(avg("Turnover"), 2).alias("AverageTurnover"))
-      //  .orderBy("InvoiceNo")
+      // Aggregate the results in a total average to get one value for Quantity and Turnover
+      .agg(round(avg("AverageProducts"), 2).alias("TotalAverageProducts"),
+        round(avg("AverageTurnover"), 2).alias("TotalAverageTurnover"))
       .show()
 
     // Best 5 customers by summing turnover for each customer
