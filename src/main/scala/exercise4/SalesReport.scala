@@ -71,15 +71,14 @@ object SalesReport {
       .orderBy(desc("Appearances"))
       .show(5)
 
-    // Average Quantity and Turnover for each invoice
+    // Average Quantity and Turnover for all procucts
     println("Average Quantity and Turnover of invoices")
     salesWithTurnover
-      .groupBy("InvoiceNo")
+      // add a group by function to receive the average prices per invoice
+      //  .groupBy("InvoiceNo")
       .agg(round(avg("Quantity"), 2).alias("AverageProducts"),
         round(avg("Turnover"), 2).alias("AverageTurnover"))
-      .orderBy("InvoiceNo")
-      // Printing first 20 results. Use salesWithTurnover.count.toInt
-      // as a parameter to fetch all the results
+      //  .orderBy("InvoiceNo")
       .show()
 
     // Best 5 customers by summing turnover for each customer
